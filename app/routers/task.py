@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from app.backend.db import Base
 from sqlalchemy import Column, String, Integer, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
-from app.models import User
+from app.models.task_and_user import User, Task
 
 router=APIRouter(prefix='/task', tags=['task'])
 
