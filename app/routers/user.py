@@ -41,7 +41,7 @@ def all_users(db: Annotated[Session, Depends(get_db)]):
 
 @router1.get('/user_id')
 def user_by_id(db: Annotated[Session, Depends(get_db)], user_id: int):
-    if db.scalar(select(User).where(User.id==user_id)) != None:
+    if db.scalar(select(User).where(User.id==user_id, User.is_activ==True)) != None:
         result= db.scalar(select(User).where(User.id==user_id))
         return result
     else:
