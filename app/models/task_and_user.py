@@ -12,7 +12,7 @@ class User(Base):
     age = Column(Integer)
     slag = Column(String, unique=True)
     tasks = relationship('Task', back_populates='user')
-    is_activ = Column(Boolean, default=True)
+    is_active = Column(Boolean, default=True)
 
 
 class Task(Base):
@@ -25,4 +25,5 @@ class Task(Base):
     completed = Column(Boolean, default=False)
     user_id = Column(Integer, ForeignKey('users.id'), index=True, nullable=False)
     slag = Column(String, unique=True)
-    user = relationship('User', back_populates='tasks')
+    user = relationship('User', back_populates='tasks'),
+    is_active=Column(Boolean, default=True)

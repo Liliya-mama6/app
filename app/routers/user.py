@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from app.backend.db_depence import get_db
 # Аннотации, Модели БД и Pydantic.
 from typing import Annotated
-from app.models.task_and_user import User
+from app.models.task_and_user import User, Task
 from app.schemas import CreateUser, UpdateUser
 # Функции работы с записями.
 from sqlalchemy import insert, select, update, delete
@@ -35,7 +35,7 @@ class User(Base):
 
 @router1.get('/')
 def all_users(db: Annotated[Session, Depends(get_db)]):
-    result = db.scalar(select(User).where(User.is_activ==True)).all()
+    result = db.scalar(select(User).where(User.is_active==True)).all()
     return result
 
 
@@ -66,7 +66,7 @@ def update_user(db:Annotated[Session, Depends(get_db)], user_id:int, update:Upda
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="User was not found")
 
-    db.execute(update(User).where(User.id==user_id).values(
+    db.execute(update.where(User.id == user_id).values(
         username=UpdateUser.username,
         firstname=UpdateUser.firstname,
         age=UpdateUser.age,
@@ -83,6 +83,7 @@ def delete_user(db:Annotated[Session, Depends(get_db)], user_id:int, update:Upda
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="User was not found")
 
-    db.execute(update(User).where(User.id == user_id).values(is_active=False))
+    db.execute(update.where(User.id == user_id).values(is_active=False))
+    db.execute(update.where(Task.user == anonim).values(is_active=False))
     db.commit()
     return {'status_code': status.HTTP_200_OK, 'transaction': 'User delete is successful!'}
